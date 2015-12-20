@@ -59,7 +59,7 @@ class Composite
 	 */
 	public function findNodeByID($parentID)
 	{
-		if (isset($this->nodes[$parentID])) {
+		if (isset($this->nodes[$parentID]) || array_key_exists($parentID, $this->nodes)) {
 			return $this->nodes[$parentID];
 		}
 
