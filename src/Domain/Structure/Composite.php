@@ -13,12 +13,12 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Composite
 {
-	/** @var  Node[]|ArrayCollection */
+	/** @var  Node[] */
 	protected $nodes;
 
 	public function __construct()
 	{
-		$this->nodes = new ArrayCollection();
+		$this->nodes = [];
 	}
 
 	/**
@@ -26,7 +26,7 @@ class Composite
 	 */
 	public function childNodes()
 	{
-		return $this->nodes->toArray();
+		return $this->nodes;
 	}
 
 	/**
@@ -49,7 +49,7 @@ class Composite
 	 */
 	public function addChild(Node $node)
 	{
-		$this->nodes->set($node->ID(), $node);
+		$this->nodes[$node->ID()] = $node;
 	}
 
 	/**
@@ -59,8 +59,8 @@ class Composite
 	 */
 	public function findNodeByID($parentID)
 	{
-		if ($this->nodes->containsKey($parentID)) {
-			return $this->nodes->get($parentID);
+		if (isset($this->nodes[$parentID])) {
+			return $this->nodes[$parentID];
 		}
 
 		foreach ($this->nodes as $node) {
