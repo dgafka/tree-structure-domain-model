@@ -1,6 +1,8 @@
 <?php
 require(__DIR__ . '/../vendor/autoload.php');
 
+$cacheRedis = new \Dgafka\Infrastructure\Cache();
+
 $memoryUsageWithoutNodes = memory_get_usage(true);;
 
 $startAdding = microtime(true);
@@ -23,15 +25,15 @@ $finishAdding = microtime(true);
 
 echo "Negative time for adding 3000 nodes: " . ($finishAdding - $startAdding) . "\n";
 
-
-
 $memoryUsageWithNodes = memory_get_usage(true);;
 echo "Memory usage (bytes) without nodes " . $memoryUsageWithoutNodes . " memory usage with 3000 nodes " . $memoryUsageWithNodes . " Diffrence: " . ($memoryUsageWithNodes - $memoryUsageWithoutNodes) . "\n" ;
 
 
 $serialized = serialize($root);
+$cacheRedis->set('structure', $serialized);
 
 $unserializingTime = microtime(true);
+$serialized = $cacheRedis->get('structure');
 $root = unserialize($serialized);
 $finishUnserializingTime = microtime(true);
 
